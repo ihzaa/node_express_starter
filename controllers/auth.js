@@ -1,13 +1,19 @@
 const { User } = require("../models/");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
-const { sign } = require("jsonwebtoken");
+const { sign, verify } = require("jsonwebtoken");
+
+const getAccessToken = (payload) => {
+  return sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET, {
+    expiresIn: "30s",
+  });
+};
 
 module.exports = {
   register: async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors.array()[0] });
     }
 
     const { name, username, email } = req.body;
@@ -30,7 +36,7 @@ module.exports = {
   login: async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors.array()[0] });
     }
 
     const { username, password } = req.body;
@@ -48,7 +54,7 @@ module.exports = {
         },
       });
     } else {
-      bcrypt.compare(password, user.password).then((match) => {
+      bcrypt.compare(password, user.password).then(async (match) => {
         if (!match)
           res.status(400).json({
             error: {
@@ -59,21 +65,58 @@ module.exports = {
             },
           });
         else {
-          const accessToken = sign(
+          const accessToken = getAccessToken({
+            username: user.username,
+            id: user.id,
+          });
+
+          const refreshToken = sign(
             { username: user.username, id: user.id },
-            process.env.JWT_SECRET,
-            {
-              expiresIn: 60,
-            }
+            process.env.JWT_REFRESH_TOKEN_SECRET
           );
 
+          user.refresh_token = refreshToken;
+          await user.save();
+
           res.json({
-            token: accessToken,
+            access_token: accessToken,
+            refresh_token: refreshToken,
             username: username,
             msg: "Login Success!",
           });
         }
       });
     }
+  },
+
+  refresh_token: async (req, res) => {
+    const { refresh_token } = req.body;
+    if (!refresh_token)
+      return res
+        .status(400)
+        .json({ error: { msg: "refresh token is required" } });
+
+    const user = await User.findOne({
+      where: {
+        refresh_token,
+      },
+    });
+
+    if (!user)
+      return res
+        .status(400)
+        .json({ error: { msg: "refresh token doesn't exist!" } });
+
+    verify(refresh_token, process.env.JWT_REFRESH_TOKEN_SECRET, (err, data) => {
+      if (err)
+        return res.status(400).json({
+          error: err,
+        });
+
+      const { username, id } = data;
+      const accessToken = getAccessToken({ username, id });
+
+      res.json({ access_token: accessToken });
+    });
   },
 };
