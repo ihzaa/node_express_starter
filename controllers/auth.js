@@ -50,7 +50,7 @@ module.exports = {
       res.status(400).json({
         error: {
           value: username,
-          msg: "Username Doesn't Exist!",
+          message: "Username Doesn't Exist!",
         },
       });
     } else {
@@ -60,7 +60,7 @@ module.exports = {
             error: {
               error: {
                 value: username,
-                msg: "Wrong Username And Password Combination",
+                message: "Wrong Username And Password Combination",
               },
             },
           });
@@ -82,7 +82,7 @@ module.exports = {
             access_token: accessToken,
             refresh_token: refreshToken,
             username: username,
-            msg: "Login Success!",
+            message: "Login Success!",
           });
         }
       });
@@ -94,7 +94,7 @@ module.exports = {
     if (!refresh_token)
       return res
         .status(400)
-        .json({ error: { msg: "refresh token is required" } });
+        .json({ error: { message: "refresh token is required" } });
 
     const user = await User.findOne({
       where: {
@@ -105,7 +105,7 @@ module.exports = {
     if (!user)
       return res
         .status(400)
-        .json({ error: { msg: "refresh token doesn't exist!" } });
+        .json({ error: { message: "refresh token doesn't exist!" } });
 
     verify(refresh_token, process.env.JWT_REFRESH_TOKEN_SECRET, (err, data) => {
       if (err)
@@ -117,6 +117,32 @@ module.exports = {
       const accessToken = getAccessToken({ username, id });
 
       res.json({ access_token: accessToken });
+    });
+  },
+
+  logout: async (req, res) => {
+    const { refresh_token } = req.body;
+    if (!refresh_token)
+      return res
+        .status(400)
+        .json({ error: { message: "refresh token is required" } });
+
+    const user = await User.findOne({
+      where: {
+        refresh_token,
+      },
+    });
+
+    if (!user)
+      return res
+        .status(400)
+        .json({ error: { message: "refresh token doesn't exist!" } });
+
+    user.refresh_token = null;
+    await user.save();
+
+    res.status(204).json({
+      message: "logout successfully!",
     });
   },
 };

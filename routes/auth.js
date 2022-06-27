@@ -10,8 +10,6 @@ router.post("/login", authValiation.login, authController.login);
 
 router.post("/refresh-token", authController.refresh_token);
 
-router.get("/", validateToken, (req, res) => {
-  res.json("OK");
-});
+router.delete("/logout", authController.logout);
 
 module.exports = router;
