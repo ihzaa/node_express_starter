@@ -5,8 +5,13 @@ const cors = require("cors");
 app.use(express.json());
 app.use(cors());
 
+var expressLayouts = require("express-ejs-layouts");
+
 // use ejs for template engine
 app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use("assets", express.static(__dirname + "public/assets"));
+app.use(expressLayouts);
 
 // ADD ROUTE START
 const fs = require("fs");

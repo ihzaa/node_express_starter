@@ -11,7 +11,9 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.json("example");
+  res.render("index", {
+    layout: "layouts/master",
+  });
 });
 
 module.exports = router;
