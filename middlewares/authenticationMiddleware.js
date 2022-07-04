@@ -1,6 +1,6 @@
 const guest = (req, res, next) => {
   if (req.session.user != undefined) {
-    res.json("you are already logged in!");
+    res.redirect("/web/admin/dashboard");
   }
   next();
 };

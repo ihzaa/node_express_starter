@@ -6,13 +6,11 @@ const cors = require("cors");
 const flash = require("express-flash");
 const bodyParser = require("body-parser");
 const uuid = require("uuid").v4;
-const FileStore = require('session-file-store')(session);
+const FileStore = require("session-file-store")(session);
 
 app.use(
   session({
     genid: (req) => {
-      console.log("Inside the session middleware");
-      console.log(req.sessionID);
       return uuid(); // use UUIDs for session IDs
     },
     store: new FileStore(),
@@ -21,9 +19,8 @@ app.use(
     saveUninitialized: true,
   })
 );
+
 // use flash session
-// app.use(express.cookieParser("keyboard cat"));
-// app.use(express.session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 
 app.use(express.json());
@@ -54,9 +51,7 @@ importRoutes(rootRoutePath);
 // ADD ROUTE END
 
 app.listen(process.env.PORT, () => {
-  // console.log(app._router.stack);
   console.log("Server running in port: " + process.env.PORT);
-  console.log(uuid());
 });
 
 function importRoutes(path, subFolder = false) {
@@ -65,9 +60,10 @@ function importRoutes(path, subFolder = false) {
     if (file.includes(".js")) {
       let name = file.split(".")[0];
       const importedRoute = require(`${path}/${name}`);
-      if (subFolder) {
-        app.use(`${path.split("./routes")[1]}/${name}`, importedRoute);
-      } else app.use(`/${name}`, importedRoute);
+      // if (subFolder) {
+      //   app.use(`${path.split("./routes")[1]}/${name}`, importedRoute);
+      // } else app.use(`/${name}`, importedRoute);
+      app.use(`/`, importedRoute);
     } else {
       importRoutes(`${path}/${file}`, true);
     }

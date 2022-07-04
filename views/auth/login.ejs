@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AdminLTE 3 | Log in (v2)</title>
+    <title><%= process.env.APP_NAME %> | Log in</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link
@@ -13,29 +13,30 @@
     <!-- Font Awesome -->
     <link
       rel="stylesheet"
-      href="/assets/plugins/fontawesome-free/css/all.min.css"
+      href="<%= process.env.BASE_URL %>/assets/plugins/fontawesome-free/css/all.min.css"
     />
     <!-- icheck bootstrap -->
     <link
       rel="stylesheet"
-      href="/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css"
+      href="<%= process.env.BASE_URL %>/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css"
     />
     <!-- Theme style -->
-    <link rel="stylesheet" href="/assets/css/adminlte.min.css" />
+    <link
+      rel="stylesheet"
+      href="<%= process.env.BASE_URL %>/assets/css/adminlte.min.css"
+    />
   </head>
   <body class="hold-transition login-page">
     <div class="login-box">
       <!-- /.login-logo -->
       <div class="card card-outline card-primary">
         <div class="card-header text-center">
-          <a href="../../index2.html" class="h1"><b>Admin</b>LTE</a>
+          <a href="" class="h1"><%= process.env.APP_NAME %></a>
         </div>
         <div class="card-body">
           <p class="login-box-msg">Sign in to start your session</p>
           <% if (messages.alert) { %>
-          <div
-            class="alert alert-<%= messages.alert_class%> alert-dismissible"
-          >
+          <div class="alert alert-<%= messages.alert_class%> alert-dismissible">
             <button
               type="button"
               class="close"
@@ -122,10 +123,10 @@
     <!-- /.login-box -->
 
     <!-- jQuery -->
-    <script src="/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="<%= process.env.BASE_URL %>/assets/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<%= process.env.BASE_URL %>/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="/assets/js/adminlte.min.js"></script>
+    <script src="<%= process.env.BASE_URL %>/assets/js/adminlte.min.js"></script>
   </body>
 </html>
