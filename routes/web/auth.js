@@ -5,14 +5,14 @@ const authController = require("../../controllers/web/auth");
 const { guest, auth } = require("../../middlewares/authenticationMiddleware");
 
 const baseRoute = "/auth/";
-router.get(baseRoute + "/login", guest, (req, res) => {
+router.get(baseRoute + "login", guest, (req, res) => {
   res.render("auth/login", { layout: "layouts/blank" });
 });
 
-router.post(baseRoute + "/login", guest);
-router.post(baseRoute + "/login", authValidator.login, authController.login);
+router.post(baseRoute + "login", guest);
+router.post(baseRoute + "login", authValidator.login, authController.login);
 
-router.get(baseRoute + "/check", auth, (req, res) => {
+router.get(baseRoute + "check", auth, (req, res) => {
   res.json(req.session);
 });
 

@@ -28,6 +28,23 @@
   </head>
   <body class="hold-transition login-page">
     <div class="login-box">
+      <% if (messages.alert) { %>
+      <div class="alert alert-<%= messages.alert_class%> alert-dismissible">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-hidden="true"
+        >
+          ×
+        </button>
+        <h5>
+          <i class="icon fas fa-<%= messages.alert_icon%>"></i> <%=
+          messages.alert_title %>
+        </h5>
+        <%= messages.alert_message %>
+      </div>
+      <% } %>
       <!-- /.login-logo -->
       <div class="card card-outline card-primary">
         <div class="card-header text-center">
@@ -35,25 +52,7 @@
         </div>
         <div class="card-body">
           <p class="login-box-msg">Sign in to start your session</p>
-          <% if (messages.alert) { %>
-          <div class="alert alert-<%= messages.alert_class%> alert-dismissible">
-            <button
-              type="button"
-              class="close"
-              data-dismiss="alert"
-              aria-hidden="true"
-            >
-              ×
-            </button>
-            <h5>
-              <i class="icon fas fa-<%= messages.alert_icon%>"></i> <%=
-              messages.alert_title %>
-            </h5>
-            <%= messages.alert_message %>
-          </div>
-          <% } %>
-
-          <form action="/web/auth/login" method="post">
+          <form action="<%= process.env.BASE_URL %>/auth/login" method="post">
             <div class="input-group mb-3">
               <input
                 type="text"
