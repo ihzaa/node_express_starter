@@ -2,9 +2,10 @@
   "name": "starter-express-mysql",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon --ignore sessions/ index.js"
+    "start_auth": "nodemon server_auth.js",
+    "start_server": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
