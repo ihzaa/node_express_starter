@@ -3,7 +3,7 @@
 
 const express = require("express");
 const router = express.Router();
-const baseRoute = "example";
+const baseRoute = "/example";
 router.get(baseRoute + "/", (req, res) => {
   res.json({
     message: "testing ok",
