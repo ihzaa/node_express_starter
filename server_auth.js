@@ -6,7 +6,7 @@ const cors = require("cors");
 app.use(express.json());
 app.use(cors());
 
-const authController = require("./controllers/api/auth");
+const authController = require("./controllers/api/AuthController");
 const authValiation = require("./middlewares/validators/api/auth");
 
 const baseRoute = "/api/auth/";
