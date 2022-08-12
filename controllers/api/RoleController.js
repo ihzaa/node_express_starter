@@ -1,4 +1,4 @@
-const { Role } = require("../../models");
+const { Role, Permission, RoleHasPermission } = require("../../models");
 const { validationResult } = require("express-validator");
 
 module.exports = {
@@ -54,6 +54,37 @@ module.exports = {
     await res.obj.destroy();
     res.json({
       message: "Data Successfully Deleted!",
+    });
+  },
+
+  storePermission: async (req, res) => {
+    let id = req.params.id;
+    RoleHasPermission.destroy({
+      where: {
+        RoleId: id,
+      },
+    });
+    let permissions = [...new Set(req.body.permissions)];
+    permissions.forEach(async (permission) => {
+      let get_permission = await Permission.findOne({
+        where: { name: permission },
+      });
+      if (get_permission === null) {
+        let created_permission = await Permission.create({ name: permission });
+        await RoleHasPermission.create({
+          PermissionId: created_permission.id,
+          RoleId: id,
+        });
+      } else {
+        await RoleHasPermission.create({
+          PermissionId: get_permission.id,
+          RoleId: id,
+        });
+      }
+    });
+
+    res.status(201).json({
+      message: "Data Successfully Created!",
     });
   },
 };

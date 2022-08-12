@@ -25,4 +25,10 @@ router.put(
 
 router.delete(baseRoute + "/:id", find_or_fail(Role), RoleController.destroy);
 
+router.post(
+  baseRoute + "/:id/permissions",
+  find_or_fail(Role),
+  RoleController.storePermission
+);
+
 module.exports = router;

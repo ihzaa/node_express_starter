@@ -34,4 +34,8 @@ module.exports = {
         }
       }),
   ],
+  store_permission: [
+    body("permissions").isArray().isLength({ min: 1 }),
+    body("permissions.*").isLength({ min: 1 }),
+  ],
 };
