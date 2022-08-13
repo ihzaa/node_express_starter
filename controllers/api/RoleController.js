@@ -57,6 +57,14 @@ module.exports = {
     });
   },
 
+  getPermission: async (req, res) => {
+    let permissions = await res.obj.getPermissions({
+      attributes: ["name"],
+      joinTableAttributes: [],
+    });
+    res.json({ permissions });
+  },
+
   storePermission: async (req, res) => {
     let id = req.params.id;
     RoleHasPermission.destroy({
@@ -72,13 +80,13 @@ module.exports = {
       if (get_permission === null) {
         let created_permission = await Permission.create({ name: permission });
         await RoleHasPermission.create({
-          PermissionId: created_permission.id,
-          RoleId: id,
+          permissionId: created_permission.id,
+          roleId: id,
         });
       } else {
         await RoleHasPermission.create({
-          PermissionId: get_permission.id,
-          RoleId: id,
+          permissionId: get_permission.id,
+          roleId: id,
         });
       }
     });

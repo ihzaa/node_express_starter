@@ -25,6 +25,12 @@ router.put(
 
 router.delete(baseRoute + "/:id", find_or_fail(Role), RoleController.destroy);
 
+router.get(
+  baseRoute + "/:id/permissions",
+  find_or_fail(Role),
+  RoleController.getPermission
+);
+
 router.post(
   baseRoute + "/:id/permissions",
   find_or_fail(Role),
