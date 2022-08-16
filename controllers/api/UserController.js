@@ -84,6 +84,12 @@ module.exports = {
   },
 
   destroy: async (req, res) => {
+    const id = req.params.id;
+    await UserRole.destroy({
+      where: {
+        UserId: id,
+      },
+    });
     await res.obj.destroy();
     res.json({
       message: "Data Successfully Deleted!",

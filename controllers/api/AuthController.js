@@ -5,7 +5,7 @@ const { sign, verify } = require("jsonwebtoken");
 
 const getAccessToken = (payload) => {
   return sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET, {
-    expiresIn: "30s",
+    expiresIn: "30h",
   });
 };
 
