@@ -2,10 +2,10 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("RoleHasPermissions", {
-      permissionId: {
+      PermissionId: {
         type: Sequelize.INTEGER,
       },
-      roleId: {
+      RoleId: {
         type: Sequelize.INTEGER,
       },
     });

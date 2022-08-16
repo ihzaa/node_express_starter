@@ -1,8 +1,8 @@
-const find_or_fail = (model) => {
+const find_or_fail = (model, options = {}) => {
   return async (req, res, next) => {
     try {
       const id = req.params.id;
-      res.obj = await model.findByPk(id);
+      res.obj = await model.findByPk(id, options);
 
       if (res.obj !== null) {
         next();
@@ -12,7 +12,7 @@ const find_or_fail = (model) => {
         });
       }
     } catch (e) {
-      res.status(500).json({ message: e });
+      res.status(500).json({ message: e.message });
     }
   };
 };

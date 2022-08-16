@@ -17,11 +17,13 @@ const paginate_result = (model, options) => {
         per_page: limit,
         links: [],
       };
-
-      let total_pages =
-        parseInt(meta.total / meta.per_page) < meta.total / meta.per_page
-          ? meta.total / meta.per_page + 1
-          : meta.total / meta.per_page;
+      let total_pages = 0;
+      if (meta.total > 0) {
+        let total_pages =
+          parseInt(meta.total / meta.per_page) < meta.total / meta.per_page
+            ? meta.total / meta.per_page + 1
+            : meta.total / meta.per_page;
+      }
 
       let url = new URL(
         `${req.protocol}://${req.get("host")}${req.originalUrl}`
@@ -44,8 +46,8 @@ const paginate_result = (model, options) => {
       }
 
       let links = {
-        first: meta.links[0].url,
-        last: meta.links.at(-1).url,
+        first: meta.links[0] ? meta.links[0].url : null,
+        last: meta.links.at(-1) ? meta.links.at(-1).url : null,
         prev: meta.links[page - 1 - 1] ? meta.links[page - 1 - 1].url : null,
         next: meta.links[page] ? meta.links[page].url : null,
       };
@@ -58,7 +60,7 @@ const paginate_result = (model, options) => {
 
       next();
     } catch (e) {
-      res.status(500).json({ message: e });
+      res.status(500).json({ message: e.message });
     }
   };
 };

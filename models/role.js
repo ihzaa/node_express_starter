@@ -10,7 +10,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Role.belongsToMany(models.Permission, {
-        through: models.RoleHasPermission
+        through: models.RoleHasPermission,
+        uniqueKey: "RoleId",
+      });
+      Role.belongsToMany(models.User, {
+        through: models.UserRole,
+        uniqueKey: "RoleId",
       });
     }
   }

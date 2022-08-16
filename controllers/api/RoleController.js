@@ -80,13 +80,13 @@ module.exports = {
       if (get_permission === null) {
         let created_permission = await Permission.create({ name: permission });
         await RoleHasPermission.create({
-          permissionId: created_permission.id,
-          roleId: id,
+          PermissionId: created_permission.id,
+          RoleId: id,
         });
       } else {
         await RoleHasPermission.create({
           permissionId: get_permission.id,
-          roleId: id,
+          RoleId: id,
         });
       }
     });

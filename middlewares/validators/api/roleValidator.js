@@ -1,5 +1,6 @@
 const { body } = require("express-validator");
 const { Role } = require("../../../models");
+const { Op } = require("sequelize");
 
 module.exports = {
   store: [
