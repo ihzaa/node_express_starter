@@ -9,9 +9,8 @@ app.use(cors());
 
 // ADD ROUTE START
 const fs = require("fs");
-const rootRoutePath = "./routes";
-
-importRoutes(rootRoutePath);
+const rootRoutePath = "./routes/api/";
+require("./routes/api/index")(app, rootRoutePath);
 // ADD ROUTE END
 
 app.listen(process.env.SERVER_PORT, () => {
@@ -23,6 +22,7 @@ function importRoutes(path, subFolder = false) {
   files.forEach((file) => {
     if (file.includes(".js")) {
       let name = file.split(".")[0];
+      console.log(`${path}/${name}`);
       const importedRoute = require(`${path}/${name}`);
       // if (subFolder) {
       //   app.use(`${path.split("./routes")[1]}/${name}`, importedRoute);
