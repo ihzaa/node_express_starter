@@ -17,19 +17,3 @@ app.listen(process.env.SERVER_PORT, () => {
   console.log("Server running in port: " + process.env.SERVER_PORT);
 });
 
-function importRoutes(path, subFolder = false) {
-  const files = fs.readdirSync(path);
-  files.forEach((file) => {
-    if (file.includes(".js")) {
-      let name = file.split(".")[0];
-      console.log(`${path}/${name}`);
-      const importedRoute = require(`${path}/${name}`);
-      // if (subFolder) {
-      //   app.use(`${path.split("./routes")[1]}/${name}`, importedRoute);
-      // } else app.use(`/${name}`, importedRoute);
-      app.use(importedRoute);
-    } else {
-      importRoutes(`${path}/${file}`, true);
-    }
-  });
-}

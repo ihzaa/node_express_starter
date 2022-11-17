@@ -10,6 +10,8 @@ module.exports = {
         username: "superadmin",
         email: "superadmin@example.com",
         password: password,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
     ]);
   },

@@ -6,7 +6,6 @@ function importRoute(app, dir_path, sub_dir_path = "") {
     if (!file.includes(".js")) {
       importRoute(app, `${dir_path}`, `${sub_dir_path}${file}/`);
     } else {
-      console.log(sub_dir_path + file);
       require(`./${sub_dir_path}${file}`)(app);
     }
   });
